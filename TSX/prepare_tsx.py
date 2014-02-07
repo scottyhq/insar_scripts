@@ -13,8 +13,8 @@ import tarfile
 import subprocess
 import shlex
 
-# NOTE: 'ld2' equivalent on viedma
-os.environ['LD_LIBRARY_PATH'] = "/usr/lib:/usr/lib64:/usr/local/lib:/usr/local/netcdf-3.6.3/lib"
+# Note: for specific computer... ensure correct library paths
+# os.environ['LD_LIBRARY_PATH'] = "/usr/lib:/usr/lib64:/usr/local/lib:/usr/local/netcdf-3.6.3/lib"
 
 def read_xml(folder):
 	'''copy xml file from tar directory to date folder (needed to create slc)'''
