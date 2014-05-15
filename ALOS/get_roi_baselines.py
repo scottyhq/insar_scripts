@@ -2,6 +2,11 @@
 '''
 Call ROI_PAC process_2pass.pl from raw to orbbase for  combinations with master date
 
+NOTE: calls process_2pass.pl *.proc roi_prep orbbase
+which overwrites early processing files if it's already been done!
+
+probably could write PRF to this file too!
+
 Author: Scott Henderson
 '''
 import sys
