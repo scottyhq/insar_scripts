@@ -18,8 +18,10 @@ def unzip():
 	zipfiles = glob.glob('*.zip')
 	print 'Unzipping all data...\n'
 	for z in zipfiles:
-		os.system('unzip {0}'.format(z))
-
+		if not os.path.isdir(z[:-4]):
+			os.system('unzip {0}'.format(z))
+		else:
+			print '{0} alread unzipped... skipping'.format(z)
 
 def make_date_folders():
 	print '\nMaking date folders...\n'
