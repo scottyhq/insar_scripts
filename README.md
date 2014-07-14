@@ -1,6 +1,6 @@
 #InSAR Scripts
 
-I keep useful scripts for working with ROI_PAC are kept here. Put them on your computer with:
+I keep useful scripts for working with ROI_PAC here. Put them on your computer with:
 
 ```
 git clone https://github.com/scottyhq/insar_scripts
