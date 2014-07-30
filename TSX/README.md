@@ -13,7 +13,7 @@ cd sar-0.5
 make install
 ```
 
-### Note on installing on MacOSX
+##### Note on installing on MacOSX
 In order to install the pre-processor successfully on my computer I had to download a few libraries and then point to their location at the configure step:
 
 ```
@@ -23,9 +23,9 @@ brew install hdf5 --enable-cxx
 make install
 ```
 
-### Create SLCs
+##### Create SLCs
 
-Be sure to add the pre-processor exectuables to your search path `tar -xzvf dims_op_oc_dfd2_372011900_1.tar.gz`, and then try running:
+Be sure to add the pre-processor exectuables to your search path `export PATH=$PATH:[rootdir]/sar-0.5/bin` and then try running:
 
 ```
 tar -xzvf dims_op_oc_dfd2_372011900_1.tar.gz
@@ -33,10 +33,10 @@ make_slc_tsx -i dims_op_oc_dfd2_372011900_1/TSX-1.SAR.L1B/TDX1_SAR__SSC______SM_
 ```
 
 ## prepare_tsx.py
-Assuming you've ordered data through the German Aerospace Center (DLR) [Web Portal](https://centaurus.caf.dlr.de:8443/eoweb-ng/template/default/welcome/entryPage.vm) you should have a few tar.gz files in a directory. Running this script will unarchive the data, and automatically create the required directory structure for processing with ROI_PAC. Note that this requires tsx_parser scripts (above) to be installed.
+Assuming you've ordered data through the German Aerospace Center (DLR) [Web Portal](https://centaurus.caf.dlr.de:8443/eoweb-ng/template/default/welcome/entryPage.vm) you should have a few tar.gz files in a directory. Running this script will unarchive the data, and automatically create the required directory structure for processing with ROI_PAC. Note that this requires TSX pre-processor scripts (above) to be installed.
 
 
-## run ROI_PAC
+## Running ROI_PAC
 The standard process_2pass.pl script has to be *run in two steps*:
 ```
 process_2pass.pl int.proc roi_prep orbbase
