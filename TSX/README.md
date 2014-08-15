@@ -6,6 +6,8 @@ Scripts in this directory are helpful for processing TerraSAR-X (TSX) data with 
 Unlike other satellites, skip generating raw files and go straight to slc files. Walter Szeliga has made code available that reads the raw formats of current satellites (TSX, CSK, RS2). You must run this code before proceding with ROI_PAC. Download the software via the [GMTSAR website](http://topex.ucsd.edu/gmtsar/downloads/), or follow the commands below:
 
 ```
+mkdir sar-0.5
+cd sar-0.5
 wget http://topex.ucsd.edu/gmtsar/tar/sar-0.5.tar
 tar -xvf sar-0.5.tar
 cd sar-0.5
