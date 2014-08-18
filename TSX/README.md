@@ -3,7 +3,7 @@
 Scripts in this directory are helpful for processing TerraSAR-X (TSX) data with ROI_PAC
 
 ## TSX Pre-processor
-Unlike other satellites, skip generating raw files and go straight to slc files. Walter Szeliga has made code available that reads the raw formats of current satellites (TSX, CSK, RS2). You must run this code before proceding with ROI_PAC. 
+Unlike other satellites, skip generating raw files and go straight to slc files. [Walter Szeliga](http://www.geology.cwu.edu/facstaff/walter) has made code available that reads the raw formats of current satellites (TSX, CSK, RS2). You must run this code before proceeding with ROI_PAC. 
 
 The [GMTSAR website](http://topex.ucsd.edu/gmtsar/downloads/) also has a modified version of the pre-processors that work with GMTSAR. The following notes are for using the version downloaded via the version posted on this page.
 
@@ -59,7 +59,7 @@ tar -xzvf dims_op_oc_dfd2_372011900_1.tar.gz
 make_slc_tsx -i dims_op_oc_dfd2_372011900_1/TSX-1.SAR.L1B/TDX1_SAR__SSC______SM_S_SRA_20111024T230132_20111024T230140/TDX1_SAR__SSC______SM_S_SRA_20111024T230132_20111024T230140.xml -p 111024
 ```
 
-## prepare_tsx.py
+## Prepare_tsx.py
 Assuming you've ordered data through the German Aerospace Center (DLR) [Web Portal](https://centaurus.caf.dlr.de:8443/eoweb-ng/template/default/welcome/entryPage.vm) you should have a few tar.gz files in a directory. Running this script will unarchive the data, and automatically create the required directory structure for processing with ROI_PAC. Note that this requires TSX pre-processor scripts (above) to be installed.
 
 
