@@ -5,10 +5,10 @@ Scripts in this directory are helpful for processing TerraSAR-X (TSX) data with 
 ## TSX Pre-processor
 Unlike other satellites, skip generating raw files and go straight to slc files. [Walter Szeliga](http://www.geology.cwu.edu/facstaff/walter) has made code available that reads the raw formats of current satellites (TSX, CSK, RS2). You must run this code before proceeding with ROI_PAC. 
 
-The [GMTSAR website](http://topex.ucsd.edu/gmtsar/downloads/) also has a modified version of the pre-processors that work with GMTSAR. The following notes are for using the version downloaded via the version posted on this page.
+The [GMTSAR website](http://topex.ucsd.edu/gmtsar/downloads/) also has a modified version of the pre-processors that work with GMTSAR. The following notes are for using the version downloaded via the version posted on this page. Here is the basic procedure:
 
 ```
-wget https://github.com/scottyhq/insar_scripts/raw/branch/sar-0.5.tar.gz
+wget https://github.com/scottyhq/insar_scripts/raw/master/TSX/sar-0.5.tar.gz
 tar -xzvf sar-0.5.tar.gz
 cd sar-0.5
 ./configure
