@@ -10,9 +10,10 @@ get_roi_baselines.py 111019
 
 2) If it has (sometimes awk/mawk/gawk/ depending on platform):
 grep PRF 1*/*raw.rsc | awk '{ print $2}' > prfs.txt
+# change master date dir
 grep P_BASELINE_TOP int*111019/*baseline.rsc | awk '{{print substr($1,5,6)" "$2}}' > dolist.in
-cat baselines.txt '111019 0\n' > baselines.txt
-paste baselines.txt prfs.txt > baselines_prfs.txt
+sed -i '1i111019 0' dolist.in
+paste dolist.in prfs.txt > baselines_prfs.txt
 
 Author: Scott Henderson
 """
