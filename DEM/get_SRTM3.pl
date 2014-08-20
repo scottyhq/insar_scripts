@@ -33,7 +33,11 @@
 # 2014/01/01: Scott Henderson
 # 			  Changed default server to get VOID-filled version 3 SRTM from LPDAAC datapool
 # 			  This dataset (SRTM plus) was released 10/20/2013
-# 			  
+# 2014/08/20: Joey Durkin
+#             Added a block that checks if the hgt.zip file already exists in the local directory,
+#             and if it does then it will use that instead of downloading it from SRTM.
+#             Useful for creating a mosaic of hgt files north of 60 degrees.
+#			  
 $] >= 5.004 or die "Perl version must be >= 5.004 (Currently $]).\n";
 
 use Env qw(INT_SCR);
@@ -113,34 +117,56 @@ $zeros = pack("n[$n]",0);
 print "$dlat by $dlon tiles requested\n";
 open(OUT,">$outfile") or die "Can't open $outfile for writing\n";
 
-for ($i=$dlat-1;$i>=0;$i--) {
+for ($i=$dlat-1;$i>=0;$i--) 
+{
 	$a=abs($lat1+$i);  
 	#print "$dlon\n"; 	
 	
-	for ($j=0;$j<$dlon;$j++) {
+	for ($j=0;$j<$dlon;$j++) 
+	{
 		#print "$j\n";
 		$b=abs($lon1+$j);
-    	$file=sprintf("%s%02d%s%03d.%s.hgt.zip",$latpre,$a,$lonpre,$b,$type);
-		#print "$file \n";
-		$found[$j]=0;
+		
+		
+		$file=sprintf("%s%02d%s%03d.%s.hgt.zip",$latpre,$a,$lonpre,$b,$type);
+		
+		
+		if (-e $file) 
+		{   # JD added this section
+		    print "$file found in local directory\n";   
+		    $found[$j]=1;                                                                               
+		    `unzip $file`;
+		    $file=sprintf("%s%02d%s%03d.hgt",$latpre,$a,$lonpre,$b); #unzipped file
+		    open $IN[$j], "$file" or die "Can't open $file for reading\n";
+                }
+		
+		else
+		{
+		
+                    #print "$file \n";
+		    $found[$j]=0;
       	
-		if ($source eq 3) {
-	  		system("curl -s http://e4ftl01.cr.usgs.gov/SRTM/SRTMGL3.003/2000.02.11/$file --fail -o $file"); #-SH changed this section
-		} else {
-			system("curl -s http://e4ftl01.cr.usgs.gov/SRTM/SRTMUS1.003/2000.02.11/$file --fail -o $file");
-		}
+		    if ($source eq 3)
+		        {
+		            system("curl -s http://e4ftl01.cr.usgs.gov/SRTM/SRTMGL3.003/2000.02.11/$file --fail -o $file"); #-SH changed this section
+		         } 
+		    else {
+			     system("curl -s http://e4ftl01.cr.usgs.gov/SRTM/SRTMUS1.003/2000.02.11/$file --fail -o $file");
+		         }
       	
-		if ($?==0) {
-			print "$file found, downloading\n";
-			$found[$j]=1;
-			`unzip $file`;
-			$file=sprintf("%s%02d%s%03d.hgt",$latpre,$a,$lonpre,$b); #unzipped file
-			open $IN[$j], "$file" or die "Can't open $file for reading\n";
-      	}
-    
-		if ($found[$j]==0) {
-      		print "$file not found, assuming open water\n";      
-    	}
+		    if ($?==0) 
+		    {
+			    print "$file found, downloading\n";
+			    $found[$j]=1;
+			    `unzip $file`;
+			    $file=sprintf("%s%02d%s%03d.hgt",$latpre,$a,$lonpre,$b); #unzipped file
+			    open $IN[$j], "$file" or die "Can't open $file for reading\n";
+      	              }
+                }
+                
+		if ($found[$j]==0) 
+		{ print "$file not found, assuming open water\n"; } 
+  	
   	}
 
 	for ($j=0;$j<$n;$j++) {
@@ -210,4 +236,3 @@ Use_rsc "$outfile write Z_SCALE       1";
 Use_rsc "$outfile write PROJECTION    LATLON";
 
 `rm *.dem.rsc.hst`;
-
