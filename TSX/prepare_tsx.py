@@ -72,7 +72,7 @@ def create_slc(directory):
 	# Run get_height.pl
 	cmd = 'get_height.pl {0}'.format(date)
 	print cmd
-	subprocess.call(shlex.split(cmd),stdout=out)
+	subprocess.call(shlex.split(cmd))
 
 	return date + '.slc'
 
