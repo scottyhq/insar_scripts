@@ -68,7 +68,12 @@ def create_slc(directory):
 	# in preparation for ROI_PAC, create empty raw files
 	open('{0}.raw'.format(date),'w').close()
 	shutil.copyfile('{0}.slc.rsc'.format(date), '{0}.raw.rsc'.format(date))
-	
+
+	# Run get_height.pl
+	cmd = 'get_height.pl {0}'.format(date)
+	print cmd
+	subprocess.call(shlex.split(cmd),stdout=out)
+
 	return date + '.slc'
 
 

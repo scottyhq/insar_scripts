@@ -59,6 +59,13 @@ tar -xzvf dims_op_oc_dfd2_372011900_1.tar.gz
 make_slc_tsx -i dims_op_oc_dfd2_372011900_1/TSX-1.SAR.L1B/TDX1_SAR__SSC______SM_S_SRA_20111024T230132_20111024T230140/TDX1_SAR__SSC______SM_S_SRA_20111024T230132_20111024T230140.xml -p 111024
 ```
 
+**NOTE**
+Before running roi_pac you have to also run `get_height.pl` in the folder where you created the SLC. If you miss this step, ROI_PAC will fail at `diffnsim.pl` because important orbital information is missing from the .rsc files.
+
+```
+get_height.pl 111024
+```
+
 ## Prepare_tsx.py
 Assuming you've ordered data through the German Aerospace Center (DLR) [Web Portal](https://centaurus.caf.dlr.de:8443/eoweb-ng/template/default/welcome/entryPage.vm) you should have a few tar.gz files in a directory. Running this script will unarchive the data, and automatically create the required directory structure for processing with ROI_PAC. Note that this requires TSX pre-processor scripts (above) to be installed.
 
