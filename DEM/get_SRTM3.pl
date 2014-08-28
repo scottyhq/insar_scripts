@@ -128,47 +128,42 @@ for ($i=$dlat-1;$i>=0;$i--)
 		$b=abs($lon1+$j);
 		
 		
-		$file=sprintf("%s%02d%s%03d.%s.hgt.zip",$latpre,$a,$lonpre,$b,$type);
-		
-		
+		# DON'T DOWNLOAD, file exists - Added by JD
+		$file=sprintf("%s%02d%s%03d.hgt",$latpre,$a,$lonpre,$b);
 		if (-e $file) 
-		{   # JD added this section
-		    print "$file found in local directory\n";   
-		    $found[$j]=1;                                                                               
-		    `unzip $file`;
-		    $file=sprintf("%s%02d%s%03d.hgt",$latpre,$a,$lonpre,$b); #unzipped file
-		    open $IN[$j], "$file" or die "Can't open $file for reading\n";
-                }
+		{
+			print "$file found in local directory, skipping download\n";   
+			$found[$j]=1;
+			open $IN[$j], "$file" or die "Can't open $file for reading\n";
+        }
 		
 		else
-		{
-		
-                    #print "$file \n";
+		{   # DOWNLOAD FILE
+			$file=sprintf("%s%02d%s%03d.%s.hgt.zip",$latpre,$a,$lonpre,$b,$type);
+            #print "$file \n";
 		    $found[$j]=0;
-      	
-		    if ($source eq 3)
-		        {
-		            system("curl -s http://e4ftl01.cr.usgs.gov/SRTM/SRTMGL3.003/2000.02.11/$file --fail -o $file"); #-SH changed this section
-		         } 
-		    else {
-			     system("curl -s http://e4ftl01.cr.usgs.gov/SRTM/SRTMUS1.003/2000.02.11/$file --fail -o $file");
-		         }
-      	
+			unless (-e $file)
+			{	
+				$cmd = "curl -s http://e4ftl01.cr.usgs.gov/SRTM/$type.003/2000.02.11/$file --fail -o $file";
+				print "$cmd\n";
+				system($cmd);
+			}		
+
 		    if ($?==0) 
-		    {
-			    print "$file found, downloading\n";
+		    {	print "downloaded $file\n";
 			    $found[$j]=1;
 			    `unzip $file`;
 			    $file=sprintf("%s%02d%s%03d.hgt",$latpre,$a,$lonpre,$b); #unzipped file
 			    open $IN[$j], "$file" or die "Can't open $file for reading\n";
-      	              }
-                }
-                
-		if ($found[$j]==0) 
-		{ print "$file not found, assuming open water\n"; } 
-  	
-  	}
+      	    }
+		    else 
+			{print "downloading $file failed! assuming open water\n"; 
+			} 
+  		}
+	}
+}
 
+	
 	for ($j=0;$j<$n;$j++) {
     	for ($k=0;$k<$dlon;$k++) {
       		if($found[$k]==0) {
@@ -189,7 +184,7 @@ for ($i=$dlat-1;$i>=0;$i--)
     	}
   	}
 
-}
+
   
 #for ($k=0;$k<$dlon;$k++) {   # why??
 #  read $IN[$k],$num,$n*$byte_size;
