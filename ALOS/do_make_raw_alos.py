@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 """
 Generate raw format for a bunch of zipped frame data downloaded from ASF
+Should work for single frames of concatenated frames
+
+Does the following steps (see end of file to comment out individual steps)
+1) Unzips everything
+2) makes date folders
+3) calls make_raw_alos.pl
+4) removes raw data files and puts zip files in folder
 
 Author: Scott Henderson
 """
@@ -8,37 +15,27 @@ Author: Scott Henderson
 import os
 import subprocess
 import shlex
-#import numpy as np
 import shutil
 import glob
 
-# Start by unzipping all files in the directory
 def unzip():
-	#zipfiles = os.listdir('.')
-	zipfiles = glob.glob('*.zip')
 	print 'Unzipping all data...\n'
+	zipfiles = glob.glob('*.zip')
 	for z in zipfiles:
 		if not os.path.isdir(z[:-4]):
 			os.system('unzip {0}'.format(z))
 		else:
 			print '{0} alread unzipped... skipping'.format(z)
 
+
 def make_date_folders():
 	print '\nMaking date folders...\n'
 	zipfiles = glob.glob('*.zip')
-	#could speed things up by only reading from some of files
-	#sceneids = np.unique([ x[6:11] for x in zipfiles])
-	#frames = np.unique([ x[11:15] for x in zipfiles])
 	folders = [ x[:-4] for x in zipfiles]
 	dates = []
 	for f in folders:
 		with open(f + '/workreport','r') as wr:
 			lines = wr.readlines()
-		
-		# check for HV file - move to make_raw_alos step
-		#nfiles =  [x for x in lines if x.startswith('Pdi_Cnt')]
-		#if '5' in nfiles[0].split('=')[1]:
-		#	HV = True
 		
 		# get date
 		time = [x for x in lines if x.startswith('Img_SceneCenter')]
@@ -77,18 +74,12 @@ def make_raw():
 		else:
 			fbd2fbs = 'NO'
 
-		#NOTE: this command starts all at one. Might be better to do them in serial?
 		cmd = 'make_raw_alos.pl IMG {0} {1} &> make_raw_alos.out'.format(date, fbd2fbs)
 		print cmd
-		#os.system(cmd)
-		
-		#Or.. (hopefully waits until finished!)
 		with open('make_raw_alos.out','w') as out:
 			subprocess.call(shlex.split(cmd), stdout=out)
 		
 		os.chdir('../')
-		
-	#return 'done' #NOTE: having the function return something prevents jobs from running in background. Doesn't appear to be true...
 
 
 def clean_up():
